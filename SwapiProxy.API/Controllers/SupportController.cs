@@ -9,7 +9,9 @@ using System.Text;
 namespace SwapiProxy.API.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [ApiVersion("1.0")]
+    [ApiExplorerSettings(GroupName = "V1")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class SupportController : ControllerBase
     {
         private readonly IConfiguration _configuration;

@@ -4,7 +4,9 @@ using SwapiProxy.Domain;
 namespace SwapiProxy.API.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [ApiVersion("2.0")]
+    [ApiExplorerSettings(GroupName = "V2")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class AggregateSwapiController : ControllerBase
     {
         private readonly IAggregateSwapiRequester _aggregateSwapiRequester;
