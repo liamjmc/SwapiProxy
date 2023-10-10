@@ -24,36 +24,36 @@ namespace SwapiProxy.API.Controllers
         // Simulates what would have happened if a user would have correctly logged in and given a JWT
         [AllowAnonymous]
         [HttpGet("valid-jwt-token", Name = "GetJwtToken")]
-        public async Task<object> GetValidJwtToken(string userName, string email)
+        public async Task<ActionResult<string>> GetValidJwtToken(string userName, string email)
         {
             var issuer = _configuration["Jwt:Issuer"];
             var audience = _configuration["Jwt:Audience"];
             var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]);
 
-            var tokenDescriptor = new SecurityTokenDescriptor
+            var subject = new ClaimsIdentity(new[]
             {
-                Subject = new ClaimsIdentity(new[]
-                {
                 new Claim("Id", Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Sub, userName),
-                new Claim(JwtRegisteredClaimNames.Email, userName),
-                new Claim(JwtRegisteredClaimNames.Jti,
-                Guid.NewGuid().ToString())
-             }),
+                new Claim(JwtRegisteredClaimNames.Email, email),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            });
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = subject,
                 Expires = DateTime.UtcNow.AddMinutes(5),
                 Issuer = issuer,
                 Audience = audience,
-                SigningCredentials = new SigningCredentials
-                (new SymmetricSecurityKey(key),
-                SecurityAlgorithms.HmacSha512Signature)
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature)
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            var jwtToken = tokenHandler.WriteToken(token);
+            //TODO check if the below is needed
+            //var jwtToken = tokenHandler.WriteToken(token);
             var stringToken = tokenHandler.WriteToken(token);
 
-            return Results.Ok(stringToken);
+            return Ok($"Bearer {stringToken}");
         }
     }
 }
