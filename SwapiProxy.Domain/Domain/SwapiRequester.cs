@@ -12,7 +12,7 @@ namespace SwapiProxy.Domain
             _httpClientFactory = httpClientFactory;
         }
 
-        public async Task<string> GetAsync(string relativeUrl)
+        public async Task<object> GetAsync(string relativeUrl)
         {
             //TODO: throw proper error if SWAPI client doesn't exist
             var httpClient = _httpClientFactory.CreateClient("Swapi");
@@ -21,9 +21,9 @@ namespace SwapiProxy.Domain
 
             if (httpResponseMessage.IsSuccessStatusCode)
             {
-                var result = await httpResponseMessage.Content.ReadAsStringAsync();
+                var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
-                return result;
+                return await JsonSerializer.DeserializeAsync<object>(contentStream);
             }
 
             return string.Empty;

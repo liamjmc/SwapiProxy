@@ -2,6 +2,6 @@
 {
     public interface ISwapiRequester
     {
-        Task<string> GetAsync(string relativeUrl);
+        Task<object> GetAsync(string relativeUrl);
     }
 }

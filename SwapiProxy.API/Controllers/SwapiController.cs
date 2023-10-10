@@ -16,8 +16,8 @@ namespace SwapiProxy.API.Controllers
             _logger = logger;
         }
 
-        [HttpGet(Name = "GetWeatherForecast")]
-        public async Task<string> Get([FromQuery] string relativeUrl)
+        [HttpGet("{*relativeUrl}", Name = "GetSwapiResponse")]
+        public async Task<object> Get(string relativeUrl)
         {
             return await _swapiRequester.GetAsync(relativeUrl);
         }
