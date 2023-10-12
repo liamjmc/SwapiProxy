@@ -2,14 +2,14 @@
 using Polly.RateLimit;
 using System.Text.Json;
 
-namespace SwapiProxy.Domain
+namespace Proxy.Domain
 {
-    public class SwapiRequester : ISwapiRequester
+    public class ProxyRequester : IProxyRequester
     {
         private readonly IRateLimiter _rateLimiter;
         private readonly IHttpClientFactory _httpClientFactory;
 
-        public SwapiRequester(IRateLimiter rateLimiter, IHttpClientFactory httpClientFactory)
+        public ProxyRequester(IRateLimiter rateLimiter, IHttpClientFactory httpClientFactory)
         {
             _rateLimiter = rateLimiter;
             _httpClientFactory = httpClientFactory;

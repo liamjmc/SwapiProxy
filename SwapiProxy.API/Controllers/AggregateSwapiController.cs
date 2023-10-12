@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using SwapiProxy.Domain;
+using Proxy.Domain;
 
 namespace SwapiProxy.API.Controllers
 {
@@ -9,10 +9,10 @@ namespace SwapiProxy.API.Controllers
     [Route("api/v{version:apiVersion}/swapis")]
     public class AggregateSwapiController : ControllerBase
     {
-        private readonly IAggregateSwapiRequester _aggregateSwapiRequester;
+        private readonly IAggregateProxyRequester _aggregateSwapiRequester;
         private readonly ILogger<SwapiController> _logger;
 
-        public AggregateSwapiController(IAggregateSwapiRequester aggregateSwapiRequester, ILogger<SwapiController> logger)
+        public AggregateSwapiController(IAggregateProxyRequester aggregateSwapiRequester, ILogger<SwapiController> logger)
         {
             _aggregateSwapiRequester = aggregateSwapiRequester;
             _logger = logger;

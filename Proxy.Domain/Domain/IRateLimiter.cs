@@ -1,6 +1,6 @@
 ﻿using Polly.RateLimit;
 
-namespace SwapiProxy.Domain
+namespace Proxy.Domain
 {
     public interface IRateLimiter
     {

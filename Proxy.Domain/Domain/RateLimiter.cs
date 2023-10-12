@@ -1,7 +1,7 @@
 ﻿using Polly.RateLimit;
 using Polly;
 
-namespace SwapiProxy.Domain
+namespace Proxy.Domain
 {
     public class RateLimiter : IRateLimiter
     {

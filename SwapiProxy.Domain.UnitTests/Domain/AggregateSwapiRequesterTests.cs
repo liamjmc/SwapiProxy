@@ -1,17 +1,17 @@
 using Moq;
 
-namespace SwapiProxy.Domain.UnitTests
+namespace Proxy.Domain.UnitTests
 {
     public class AggregateSwapiRequesterTests
     {
-        private AggregateSwapiRequester _aggregateSwapiRequester;
-        private Mock<ISwapiRequester> _swapiRequesterMock;
+        private AggregateProxyRequester _aggregateSwapiRequester;
+        private Mock<IProxyRequester> _swapiRequesterMock;
 
         [SetUp]
         public void Setup()
         {
-            _swapiRequesterMock = new Mock<ISwapiRequester>();
-            _aggregateSwapiRequester = new AggregateSwapiRequester(_swapiRequesterMock.Object);
+            _swapiRequesterMock = new Mock<IProxyRequester>();
+            _aggregateSwapiRequester = new AggregateProxyRequester(_swapiRequesterMock.Object);
         }
 
         [TestCase(1)]

@@ -1,6 +1,6 @@
-﻿namespace SwapiProxy.Domain
+﻿namespace Proxy.Domain
 {
-    public interface IAggregateSwapiRequester
+    public interface IAggregateProxyRequester
     {
         Task<IEnumerable<object>> GetAsync(IEnumerable<string> relativeUrls);
     }

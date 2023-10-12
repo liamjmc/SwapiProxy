@@ -2,14 +2,14 @@ using Moq;
 using Moq.Protected;
 using Newtonsoft.Json;
 using NuGet.Frameworks;
-using SwapiProxy.Domain.UnitTests.Models;
+using Proxy.Domain.UnitTests.Models;
 using System.Net;
 
-namespace SwapiProxy.Domain.UnitTests
+namespace Proxy.Domain.UnitTests
 {
     public class SwapiRequesterTests
     {
-        private SwapiRequester _swapiRequester;
+        private ProxyRequester _swapiRequester;
         private Mock<IHttpClientFactory> _httpClientFactoryMock;
         private Mock<HttpMessageHandler> _httpMessageHandlerMock;
 
@@ -21,7 +21,7 @@ namespace SwapiProxy.Domain.UnitTests
 
             var rateLimiter = new Mock<IRateLimiter>();
 
-            _swapiRequester = new SwapiRequester(rateLimiter.Object, _httpClientFactoryMock.Object);
+            _swapiRequester = new ProxyRequester(rateLimiter.Object, _httpClientFactoryMock.Object);
         }
 
         [TestCase("films/1")]

@@ -5,9 +5,10 @@ using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using SwapiProxy.Domain;
+using Proxy.Domain;
 using System.Text;
 using Polly;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -69,12 +70,11 @@ builder.Services.AddVersionedApiExplorer(setup =>
     setup.SubstituteApiVersionInUrl = true;
 });
 
-builder.Services.AddTransient<ISwapiRequester, SwapiRequester>();
-builder.Services.AddTransient<IAggregateSwapiRequester, AggregateSwapiRequester>();
+builder.Services.AddTransient<IProxyRequester, ProxyRequester>();
+builder.Services.AddTransient<IAggregateProxyRequester, AggregateProxyRequester>();
 builder.Services.AddSingleton<IRateLimiter, RateLimiter>();
 
-int maxParallelism = 10;
-var throttler = Policy.BulkheadAsync<HttpResponseMessage>(maxParallelism, Int32.MaxValue);
+builder.Services.Configure<AppSettings>(a => a.ClientName = "Swapi");
 
 builder.Services.AddHttpClient("Swapi", httpClient =>
 {

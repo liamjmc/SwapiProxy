@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwapiProxy.Domain", "SwapiProxy.Domain\SwapiProxy.Domain.csproj", "{AEF35EEF-A522-4414-A1CB-0937D602FE4F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SwapiProxy.Domain.UnitTests", "SwapiProxy.Domain.UnitTests\SwapiProxy.Domain.UnitTests.csproj", "{87FDF28B-E770-4E7C-B16C-141294504047}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwapiProxy.Domain.UnitTests", "SwapiProxy.Domain.UnitTests\SwapiProxy.Domain.UnitTests.csproj", "{87FDF28B-E770-4E7C-B16C-141294504047}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwapiProxy.API.IntegrationTests", "SwapiProxy.API.IntegrationTests\SwapiProxy.API.IntegrationTests.csproj", "{46046091-731E-4AC5-A7F9-3ED2E8EEC0AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SwapiProxy.API.IntegrationTests", "SwapiProxy.API.IntegrationTests\SwapiProxy.API.IntegrationTests.csproj", "{46046091-731E-4AC5-A7F9-3ED2E8EEC0AD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{EB75C580-3960-4D68-9EB9-48F97B322F42}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{2AC6FD57-009D-457E-8AA0-7066583AB4F3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwapiProxy.API", "SwapiProxy.API\SwapiProxy.API.csproj", "{A699F116-854A-4663-9E68-2FD936834A85}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SwapiProxy.API", "SwapiProxy.API\SwapiProxy.API.csproj", "{A699F116-854A-4663-9E68-2FD936834A85}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Proxy.Domain", "Proxy.Domain\Proxy.Domain.csproj", "{212A54D2-2781-4BC7-8D9D-4A6188DA303C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,10 +21,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{AEF35EEF-A522-4414-A1CB-0937D602FE4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AEF35EEF-A522-4414-A1CB-0937D602FE4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AEF35EEF-A522-4414-A1CB-0937D602FE4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AEF35EEF-A522-4414-A1CB-0937D602FE4F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{87FDF28B-E770-4E7C-B16C-141294504047}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{87FDF28B-E770-4E7C-B16C-141294504047}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{87FDF28B-E770-4E7C-B16C-141294504047}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -37,15 +33,19 @@ Global
 		{A699F116-854A-4663-9E68-2FD936834A85}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A699F116-854A-4663-9E68-2FD936834A85}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A699F116-854A-4663-9E68-2FD936834A85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{212A54D2-2781-4BC7-8D9D-4A6188DA303C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{212A54D2-2781-4BC7-8D9D-4A6188DA303C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{212A54D2-2781-4BC7-8D9D-4A6188DA303C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{212A54D2-2781-4BC7-8D9D-4A6188DA303C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{AEF35EEF-A522-4414-A1CB-0937D602FE4F} = {EB75C580-3960-4D68-9EB9-48F97B322F42}
 		{87FDF28B-E770-4E7C-B16C-141294504047} = {2AC6FD57-009D-457E-8AA0-7066583AB4F3}
 		{46046091-731E-4AC5-A7F9-3ED2E8EEC0AD} = {2AC6FD57-009D-457E-8AA0-7066583AB4F3}
 		{A699F116-854A-4663-9E68-2FD936834A85} = {EB75C580-3960-4D68-9EB9-48F97B322F42}
+		{212A54D2-2781-4BC7-8D9D-4A6188DA303C} = {EB75C580-3960-4D68-9EB9-48F97B322F42}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {684F7266-F524-428E-A104-B232B96903E7}

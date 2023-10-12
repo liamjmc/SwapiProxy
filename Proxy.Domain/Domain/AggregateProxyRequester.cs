@@ -1,13 +1,10 @@
-﻿using System.Net.Http;
-using System.Text.Json;
-
-namespace SwapiProxy.Domain
+﻿namespace Proxy.Domain
 {
-    public class AggregateSwapiRequester : IAggregateSwapiRequester
+    public class AggregateProxyRequester : IAggregateProxyRequester
     {
-        private readonly ISwapiRequester _swapiRequester;
+        private readonly IProxyRequester _swapiRequester;
 
-        public AggregateSwapiRequester(ISwapiRequester swapiRequester)
+        public AggregateProxyRequester(IProxyRequester swapiRequester)
         {
             _swapiRequester = swapiRequester;
         }

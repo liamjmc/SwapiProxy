@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SwapiProxy.Domain\SwapiProxy.Domain.csproj" />
+    <ProjectReference Include="..\Proxy.Domain\Proxy.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
