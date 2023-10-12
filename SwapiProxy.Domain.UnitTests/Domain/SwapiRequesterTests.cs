@@ -1,9 +1,10 @@
 using Moq;
 using Moq.Protected;
 using Newtonsoft.Json;
-using NuGet.Frameworks;
 using Proxy.Domain.UnitTests.Models;
 using System.Net;
+using Polly.RateLimit;
+using Polly;
 
 namespace Proxy.Domain.UnitTests
 {
@@ -20,6 +21,7 @@ namespace Proxy.Domain.UnitTests
             _httpMessageHandlerMock = new Mock<HttpMessageHandler>();
 
             var rateLimiter = new Mock<IRateLimiter>();
+            rateLimiter.Setup(r => r.GetPolicy()).Returns(Policy.RateLimitAsync(10, TimeSpan.FromSeconds(100)));
 
             _swapiRequester = new ProxyRequester(rateLimiter.Object, _httpClientFactoryMock.Object);
         }
