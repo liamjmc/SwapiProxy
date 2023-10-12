@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SwapiProxy.Domain;
 using System.Text;
+using Polly;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -70,11 +71,21 @@ builder.Services.AddVersionedApiExplorer(setup =>
 
 builder.Services.AddTransient<ISwapiRequester, SwapiRequester>();
 builder.Services.AddTransient<IAggregateSwapiRequester, AggregateSwapiRequester>();
+builder.Services.AddSingleton<IRateLimiter, RateLimiter>();
+
+int maxParallelism = 10;
+var throttler = Policy.BulkheadAsync<HttpResponseMessage>(maxParallelism, Int32.MaxValue);
 
 builder.Services.AddHttpClient("Swapi", httpClient =>
 {
     httpClient.BaseAddress = new Uri("https://swapi.dev/api/");
-});
+}).AddTransientHttpErrorPolicy(builder =>
+    builder.WaitAndRetryAsync(new[]
+    {
+        TimeSpan.FromSeconds(1),
+        TimeSpan.FromSeconds(5),
+        TimeSpan.FromSeconds(15),
+    }));
 
 //TODO: Make sure all the below is definitely needed
 builder.Services.AddAuthentication(options =>
@@ -110,9 +121,13 @@ builder.Services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
 builder.Services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
 builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
 builder.Services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
+
 builder.Services.AddInMemoryRateLimiting();
 
 var app = builder.Build();
+
+var ipPolicyStore = app.Services.GetRequiredService<IIpPolicyStore>(); 
+ipPolicyStore.SeedAsync().GetAwaiter().GetResult();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -120,7 +135,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(options =>
     {
-        options.DocumentTitle = "Parcel Delivery API";
+        options.DocumentTitle = "Swapi Proxy API";
         options.SwaggerEndpoint($"/swagger/V1/swagger.json", "V1");
         options.SwaggerEndpoint($"/swagger/V2/swagger.json", "V2");
     });

@@ -6,7 +6,7 @@ namespace SwapiProxy.API.Controllers
     [ApiController]
     [ApiVersion("2.0")]
     [ApiExplorerSettings(GroupName = "V2")]
-    [Route("api/v{version:apiVersion}/[controller]")]
+    [Route("api/v{version:apiVersion}/swapis")]
     public class AggregateSwapiController : ControllerBase
     {
         private readonly IAggregateSwapiRequester _aggregateSwapiRequester;
