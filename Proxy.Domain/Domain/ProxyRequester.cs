@@ -23,12 +23,16 @@ namespace Proxy.Domain
             var httpClient = _httpClientFactory.CreateClient(_appSettings.ClientName);
             var rateLimiter = _rateLimiter.GetPolicy();
 
-            var httpResponseMessage = await rateLimiter.ExecuteAsync(() =>
+            var httpResponseMessage = await rateLimiter.ExecuteAsync(async () =>
             {
                 //TODO: tidy this write line up
-                Console.WriteLine($"Came into execution {DateTime.Now.ToLongTimeString()}");
+                Console.WriteLine($"Start request {DateTime.Now.ToLongTimeString()}");
 
-                return httpClient.GetAsync(relativeUrl);
+                var result = await httpClient.GetAsync(relativeUrl);
+
+                Console.WriteLine($"Finished request {DateTime.Now.ToLongTimeString()}");
+
+                return result;
             });
 
             if (httpResponseMessage.IsSuccessStatusCode)

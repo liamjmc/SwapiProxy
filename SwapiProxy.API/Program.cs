@@ -131,7 +131,6 @@ builder.Services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
 builder.Services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
 builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
 builder.Services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
-
 builder.Services.AddInMemoryRateLimiting();
 
 var app = builder.Build();
@@ -151,6 +150,8 @@ if (app.Environment.IsDevelopment())
         options.SwaggerEndpoint($"/swagger/V2/swagger.json", "V2");
     });
 }
+
+app.UseIpRateLimiting();
 
 app.UseHttpsRedirection();
 
