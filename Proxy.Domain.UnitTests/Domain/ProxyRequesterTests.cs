@@ -83,7 +83,7 @@ namespace Proxy.Domain.UnitTests
 
             _proxyRequester = new ProxyRequester(_rateLimiterMock.Object, _httpClientFactoryMock.Object, appSettings, _loggerMock.Object);
 
-            var result = await _proxyRequester.GetAsync(relativeUrl);
+            var result = await _proxyRequester.GetAsync(relativeUrl, CancellationToken.None);
 
             Assert.That(result, Is.Not.Null);
         }
@@ -112,7 +112,7 @@ namespace Proxy.Domain.UnitTests
 
             _proxyRequester = new ProxyRequester(_rateLimiterMock.Object, _httpClientFactoryMock.Object, appSettings, _loggerMock.Object);
 
-            Assert.That(async () => await _proxyRequester.GetAsync(relativeUrl), Throws.ArgumentNullException);
+            Assert.That(async () => await _proxyRequester.GetAsync(relativeUrl, CancellationToken.None), Throws.ArgumentNullException);
         }
 
         [TestCase(" ")]
@@ -139,7 +139,7 @@ namespace Proxy.Domain.UnitTests
 
             _proxyRequester = new ProxyRequester(_rateLimiterMock.Object, _httpClientFactoryMock.Object, appSettings, _loggerMock.Object);
 
-            Assert.That(async () => await _proxyRequester.GetAsync("/films/2"), Throws.ArgumentNullException);
+            Assert.That(async () => await _proxyRequester.GetAsync("/films/2", CancellationToken.None), Throws.ArgumentNullException);
         }
 
         [TestCase(" ")]
@@ -166,7 +166,7 @@ namespace Proxy.Domain.UnitTests
 
             _proxyRequester = new ProxyRequester(_rateLimiterMock.Object, _httpClientFactoryMock.Object, appSettings, _loggerMock.Object);
 
-            Assert.That(async () => await _proxyRequester.GetAsync("/films/2"), Throws.ArgumentNullException);
+            Assert.That(async () => await _proxyRequester.GetAsync("/films/2", CancellationToken.None), Throws.ArgumentNullException);
         }
 
         [Test]
@@ -191,7 +191,7 @@ namespace Proxy.Domain.UnitTests
 
             _proxyRequester = new ProxyRequester(_rateLimiterMock.Object, _httpClientFactoryMock.Object, appSettings, _loggerMock.Object);
 
-            var result = await _proxyRequester.GetAsync("/films/4");
+            var result = await _proxyRequester.GetAsync("/films/4", CancellationToken.None);
 
             Assert.That(result, Is.Null);
         }

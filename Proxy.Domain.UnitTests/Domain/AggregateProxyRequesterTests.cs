@@ -23,10 +23,10 @@ namespace Proxy.Domain.UnitTests
         {
             var relativeUrls = Enumerable.Range(0, 10).Select(x => Guid.NewGuid().ToString());
 
-            _swapiRequesterMock.Setup(s => s.GetAsync(It.IsAny<string>()))
+            _swapiRequesterMock.Setup(s => s.GetAsync(It.IsAny<string>(), CancellationToken.None))
                 .ReturnsAsync(new object());
 
-            var result = await _aggregateSwapiRequester.GetAsync(relativeUrls);
+            var result = await _aggregateSwapiRequester.GetAsync(relativeUrls, CancellationToken.None);
 
             Assert.That(result.Count(), Is.EqualTo(relativeUrls.Count()));
         }
@@ -34,10 +34,10 @@ namespace Proxy.Domain.UnitTests
         [Test]
         public void GivenAnAggregateSwapiRequestIsMade_WhenTheRequestHasNoRelativeUrls_ThenErrorIsThrown()
         {
-            _swapiRequesterMock.Setup(s => s.GetAsync(It.IsAny<string>()))
+            _swapiRequesterMock.Setup(s => s.GetAsync(It.IsAny<string>(), CancellationToken.None))
                 .ReturnsAsync(new object());
 
-            Assert.That(async () => await _aggregateSwapiRequester.GetAsync(Enumerable.Empty<string>()), Throws.ArgumentException);
+            Assert.That(async () => await _aggregateSwapiRequester.GetAsync(Enumerable.Empty<string>(), CancellationToken.None), Throws.ArgumentException);
         }
 
         [Test]
@@ -45,10 +45,10 @@ namespace Proxy.Domain.UnitTests
         {
             var relativeUrls = Enumerable.Range(0, 10).Select(x => Guid.NewGuid().ToString());
 
-            _swapiRequesterMock.Setup(s => s.GetAsync(It.IsAny<string>()))
+            _swapiRequesterMock.Setup(s => s.GetAsync(It.IsAny<string>(), CancellationToken.None))
                 .ThrowsAsync(new ArgumentException());
 
-            Assert.That(async () => await _aggregateSwapiRequester.GetAsync(relativeUrls), Throws.ArgumentException);
+            Assert.That(async () => await _aggregateSwapiRequester.GetAsync(relativeUrls, CancellationToken.None), Throws.ArgumentException);
         }
     }
 }

@@ -23,9 +23,9 @@ namespace SwapiProxy.API.Controllers
          * Could possible use other methods such as a base64 encoded query string value
          */
         [HttpPost(Name = "GetAggregateSwapiResponse")]
-        public async Task<ActionResult<IEnumerable<object>>> Get([FromBody] IEnumerable<string> relativeUrls)
+        public async Task<ActionResult<IEnumerable<object>>> Get([FromBody] IEnumerable<string> relativeUrls, CancellationToken cancellationToken)
         {
-            var result = await _aggregateSwapiRequester.GetAsync(relativeUrls);
+            var result = await _aggregateSwapiRequester.GetAsync(relativeUrls, cancellationToken);
 
             return Ok(result);
         }

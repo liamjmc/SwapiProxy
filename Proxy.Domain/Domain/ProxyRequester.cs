@@ -19,7 +19,7 @@ namespace Proxy.Domain
             _logger = logger;
         }
 
-        public async Task<object?> GetAsync(string relativeUrl)
+        public async Task<object?> GetAsync(string relativeUrl, CancellationToken cancellationToken)
         {
             if (string.IsNullOrWhiteSpace(relativeUrl))
             {
@@ -38,7 +38,7 @@ namespace Proxy.Domain
 
             try
             {
-                var httpResponseMessage = await rateLimiter.ExecuteAsync(async () =>  await httpClient.GetAsync(relativeUrl));
+                var httpResponseMessage = await rateLimiter.ExecuteAsync(async () =>  await httpClient.GetAsync(relativeUrl, cancellationToken));
 
                 if (httpResponseMessage.IsSuccessStatusCode)
                 {

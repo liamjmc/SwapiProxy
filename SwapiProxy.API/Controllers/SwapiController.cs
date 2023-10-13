@@ -19,9 +19,9 @@ namespace SwapiProxy.API.Controllers
         }
 
         [HttpGet("{*relativeUrl}", Name = "GetSwapiResponse")]
-        public async Task<ActionResult<object?>> Get(string relativeUrl)
+        public async Task<ActionResult<object?>> Get(string relativeUrl, CancellationToken cancellationToken)
         {
-            var result = await _swapiRequester.GetAsync(relativeUrl);
+            var result = await _swapiRequester.GetAsync(relativeUrl, cancellationToken);
 
             return Ok(result);
         }

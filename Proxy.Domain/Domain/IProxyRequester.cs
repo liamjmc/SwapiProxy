@@ -2,6 +2,6 @@
 {
     public interface IProxyRequester
     {
-        Task<object?> GetAsync(string relativeUrl);
+        Task<object?> GetAsync(string relativeUrl, CancellationToken cancellationToken);
     }
 }

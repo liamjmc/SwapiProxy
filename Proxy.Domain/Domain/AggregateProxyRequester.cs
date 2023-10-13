@@ -9,7 +9,7 @@
             _swapiRequester = swapiRequester;
         }
 
-        public async Task<IEnumerable<object>> GetAsync(IEnumerable<string> relativeUrls)
+        public async Task<IEnumerable<object>> GetAsync(IEnumerable<string> relativeUrls, CancellationToken cancellationToken)
         {
             if (relativeUrls.Any() == false)
                 throw new ArgumentException($"No relative URLs have been given.");
@@ -18,7 +18,7 @@
 
             foreach (var relativeUrl in relativeUrls)
             {
-                var response = await _swapiRequester.GetAsync(relativeUrl);
+                var response = await _swapiRequester.GetAsync(relativeUrl, cancellationToken);
 
                 if (response != null)
                     result.Add(response);
