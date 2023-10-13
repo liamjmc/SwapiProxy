@@ -49,7 +49,7 @@ namespace SwapiProxy.API.IntegrationTests.Controllers
         }
 
         [Test]
-        public async Task GivenARequestToTheSwapiProxy_WhenABearerTokenIsNotGiven_ThenA404IsReturned()
+        public async Task GivenARequestToTheSwapiProxy_WhenABearerTokenIsNotGiven_ThenA401IsReturned()
         {
             var response = await _httpClient.GetAsync($"/api/v1/swapi/films/2");
 
@@ -57,7 +57,7 @@ namespace SwapiProxy.API.IntegrationTests.Controllers
         }
 
         [Test]
-        public async Task GivenARequestToTheSwapiProxy_WhenABearerTokenIsGiven_ThenA404IsReturned()
+        public async Task GivenARequestToTheSwapiProxy_WhenABearerTokenIsGiven_ThenA200IsReturned()
         {
             var bearerToken = BearerTokenHelper.GetBearerToken();
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);

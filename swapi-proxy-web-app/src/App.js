@@ -8,13 +8,14 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       
+      <div className="App">
+        <Swapi/>
+      </div>
 
-      <Swapi/>
-
-      <ReactQueryDevtools initialIsOpen={true} />
+      {/* <ReactQueryDevtools initialIsOpen={true} /> */}
 
     </QueryClientProvider>
   );
 };
 
-export default App;
+export default App; 

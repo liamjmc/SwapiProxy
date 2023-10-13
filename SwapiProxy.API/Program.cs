@@ -117,6 +117,14 @@ builder.Services.AddAuthorization(options =>
       .Build();
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", builder =>
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader());
+});
+
 builder.Services.AddMemoryCache();
 builder.Services.Configure<IpRateLimitOptions>(builder.Configuration.GetSection("IpRateLimiting"));
 builder.Services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
@@ -134,6 +142,7 @@ ipPolicyStore.SeedAsync().GetAwaiter().GetResult();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    app.UseCors("AllowAll");
     app.UseSwagger();
     app.UseSwaggerUI(options =>
     {
