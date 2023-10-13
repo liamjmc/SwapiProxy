@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Proxy.Domain\Proxy.Domain.csproj" />
+  <InternalsVisibleTo Include="SwapiProxy.API.IntegrationTests" />
   </ItemGroup>
 
 </Project>

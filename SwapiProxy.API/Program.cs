@@ -8,8 +8,6 @@ using Microsoft.OpenApi.Models;
 using Proxy.Domain;
 using System.Text;
 using Polly;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -82,7 +80,7 @@ builder.Services.Configure<AppSettings>(appSettingsConfiguration);
 
 builder.Services.AddHttpClient(appSettings.ClientName, httpClient =>
 {
-    httpClient.BaseAddress = new Uri("https://swapi.dev/api/");
+    httpClient.BaseAddress = new Uri(appSettings.ClientUrl);
 }).AddTransientHttpErrorPolicy(builder =>
     builder.WaitAndRetryAsync(new[]
     {

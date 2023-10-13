@@ -51,8 +51,6 @@ namespace SwapiProxy.API.Controllers
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            //TODO check if the below is needed
-            //var jwtToken = tokenHandler.WriteToken(token);
             var stringToken = tokenHandler.WriteToken(token);
 
             return Ok($"Bearer {stringToken}");
