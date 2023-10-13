@@ -7,6 +7,7 @@ using Polly.RateLimit;
 using Polly;
 using Microsoft.Extensions.Options;
 using NUnit.Framework;
+using Microsoft.Extensions.Logging;
 
 namespace Proxy.Domain.UnitTests
 {
@@ -15,6 +16,8 @@ namespace Proxy.Domain.UnitTests
         private ProxyRequester _proxyRequester;
         private Mock<IHttpClientFactory> _httpClientFactoryMock;
         private Mock<HttpMessageHandler> _httpMessageHandlerMock;
+        private Mock<ILogger<ProxyRequester>> _loggerMock;
+        private Mock<IRateLimiter> _rateLimiterMock;
 
         [SetUp]
         public void Setup()
@@ -22,12 +25,10 @@ namespace Proxy.Domain.UnitTests
             _httpClientFactoryMock = new Mock<IHttpClientFactory>();
             _httpMessageHandlerMock = new Mock<HttpMessageHandler>();
 
-            var rateLimiter = new Mock<IRateLimiter>();
-            rateLimiter.Setup(r => r.GetPolicy()).Returns(Policy.RateLimitAsync(10, TimeSpan.FromSeconds(100)));
+            _rateLimiterMock = new Mock<IRateLimiter>();
+            _rateLimiterMock.Setup(r => r.GetPolicy()).Returns(Policy.RateLimitAsync(10, TimeSpan.FromSeconds(100)));
 
-            var appSettings = Options.Create(new AppSettings { ClientName = "swapi-client" });
-
-            _proxyRequester = new ProxyRequester(rateLimiter.Object, _httpClientFactoryMock.Object, appSettings);
+            _loggerMock = new Mock<ILogger<ProxyRequester>>();
         }
 
         [TestCase("films/1")]
@@ -78,9 +79,94 @@ namespace Proxy.Domain.UnitTests
 
             _httpClientFactoryMock.Setup(_ => _.CreateClient(It.IsAny<string>())).Returns(httpClient);
 
+            var appSettings = Options.Create(new AppSettings { ClientName = "swapi-client", ClientUrl = "https://client.com/" });
+
+            _proxyRequester = new ProxyRequester(_rateLimiterMock.Object, _httpClientFactoryMock.Object, appSettings, _loggerMock.Object);
+
             var result = await _proxyRequester.GetAsync(relativeUrl);
 
             Assert.That(result, Is.Not.Null);
+        }
+
+        [TestCase(" ")]
+        [TestCase("")]
+        [TestCase(null)]
+        public void GivenThatSwapiIsRequested_WhenTheRelativeUrlIsEmpty_ThenAnErrorIsThrown(string relativeUrl)
+        {
+            var film = new Film();
+
+            _httpMessageHandlerMock.Protected()
+                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
+                .ReturnsAsync(new HttpResponseMessage
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Content = new StringContent(JsonConvert.SerializeObject(film))
+                });
+
+            var httpClient = new HttpClient(_httpMessageHandlerMock.Object);
+            httpClient.BaseAddress = new Uri("https://starwarsapi.co/");
+
+            _httpClientFactoryMock.Setup(_ => _.CreateClient(It.IsAny<string>())).Returns(httpClient);
+
+            var appSettings = Options.Create(new AppSettings { ClientName = "swapi-client", ClientUrl = "https://client.com/" });
+
+            _proxyRequester = new ProxyRequester(_rateLimiterMock.Object, _httpClientFactoryMock.Object, appSettings, _loggerMock.Object);
+
+            Assert.That(async () => await _proxyRequester.GetAsync(relativeUrl), Throws.ArgumentNullException);
+        }
+
+        [TestCase(" ")]
+        [TestCase("")]
+        [TestCase(null)]
+        public void GivenThatSwapiIsRequested_WhenTheClientNameIsEmpty_ThenAnErrorIsThrown(string clientName)
+        {
+            var film = new Film();
+
+            _httpMessageHandlerMock.Protected()
+                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
+                .ReturnsAsync(new HttpResponseMessage
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Content = new StringContent(JsonConvert.SerializeObject(film))
+                });
+
+            var httpClient = new HttpClient(_httpMessageHandlerMock.Object);
+            httpClient.BaseAddress = new Uri("https://starwarsapi.co/");
+
+            _httpClientFactoryMock.Setup(_ => _.CreateClient(It.IsAny<string>())).Returns(httpClient);
+
+            var appSettings = Options.Create(new AppSettings { ClientName = clientName, ClientUrl = "https://client.com/" });
+
+            _proxyRequester = new ProxyRequester(_rateLimiterMock.Object, _httpClientFactoryMock.Object, appSettings, _loggerMock.Object);
+
+            Assert.That(async () => await _proxyRequester.GetAsync("/films/2"), Throws.ArgumentNullException);
+        }
+
+        [TestCase(" ")]
+        [TestCase("")]
+        [TestCase(null)]
+        public void GivenThatSwapiIsRequested_WhenTheClientUrlIsEmpty_ThenAnErrorIsThrown(string clientUrl)
+        {
+            var film = new Film();
+
+            _httpMessageHandlerMock.Protected()
+                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
+                .ReturnsAsync(new HttpResponseMessage
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Content = new StringContent(JsonConvert.SerializeObject(film))
+                });
+
+            var httpClient = new HttpClient(_httpMessageHandlerMock.Object);
+            httpClient.BaseAddress = new Uri("https://starwarsapi.co/");
+
+            _httpClientFactoryMock.Setup(_ => _.CreateClient(It.IsAny<string>())).Returns(httpClient);
+
+            var appSettings = Options.Create(new AppSettings { ClientName = "swapi-client", ClientUrl = clientUrl });
+
+            _proxyRequester = new ProxyRequester(_rateLimiterMock.Object, _httpClientFactoryMock.Object, appSettings, _loggerMock.Object);
+
+            Assert.That(async () => await _proxyRequester.GetAsync("/films/2"), Throws.ArgumentNullException);
         }
 
         [Test]
@@ -100,6 +186,10 @@ namespace Proxy.Domain.UnitTests
             httpClient.BaseAddress = new Uri("https://starwarsapi.co/");
 
             _httpClientFactoryMock.Setup(_ => _.CreateClient(It.IsAny<string>())).Returns(httpClient);
+
+            var appSettings = Options.Create(new AppSettings { ClientName = "swapi-client", ClientUrl = "https://client.com/" });
+
+            _proxyRequester = new ProxyRequester(_rateLimiterMock.Object, _httpClientFactoryMock.Object, appSettings, _loggerMock.Object);
 
             var result = await _proxyRequester.GetAsync("/films/4");
 

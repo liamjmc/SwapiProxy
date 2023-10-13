@@ -8,6 +8,7 @@ using Microsoft.OpenApi.Models;
 using Proxy.Domain;
 using System.Text;
 using Polly;
+using SwapiProxy;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -156,6 +157,8 @@ app.UseIpRateLimiting();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseMiddleware<ErrorHandlerMiddleware>();
 
 app.MapControllers();
 

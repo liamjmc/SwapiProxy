@@ -31,7 +31,6 @@ export function Swapi() {
         <>
             <div className="form-area">
                 Url: <input type="text" value={url} onChange={e => setUrl(e.target.value)} /> <br />
-                {/* Method: <input type="text" value={method} onChange={e => setMethod(e.target.value)} /> <br /> */}
                 Method: 
                     <select value={method} onChange={e => setMethod(e.target.value)}>
                         <option value="GET">GET</option>
