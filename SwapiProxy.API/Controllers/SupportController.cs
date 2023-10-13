@@ -21,9 +21,11 @@ namespace SwapiProxy.API.Controllers
             _configuration = configuration;
         }
 
-        // This is used in order to generate a token that will correctly work with the API
-        // This has been implemented purely for test purposes and so would not be in a production-ready API
-        // Simulates what would have happened if a user would have correctly logged in and given a JWT
+        /* 
+         * This is used in order to generate a token that will correctly work with the API
+         * This has been implemented purely for test purposes and so would not be in a production-ready API
+         * Simulates what would have happened if a user would have correctly logged in and given a JWT
+         */ 
         [AllowAnonymous]
         [HttpGet("valid-jwt-token", Name = "GetJwtToken")]
         public ActionResult<string> GetValidJwtToken(string userName, string email)
