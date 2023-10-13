@@ -14,17 +14,11 @@
             if (relativeUrls.Any() == false)
                 throw new ArgumentException($"No relative URLs have been given.");
 
-            var result = new List<object>();
+            var swapiRequestTasks = relativeUrls.Select(r => _swapiRequester.GetAsync(r, cancellationToken)).ToList();
 
-            foreach (var relativeUrl in relativeUrls)
-            {
-                var response = await _swapiRequester.GetAsync(relativeUrl, cancellationToken);
+            var result = await Task.WhenAll(swapiRequestTasks);
 
-                if (response != null)
-                    result.Add(response);
-            }
-
-            return result;
+            return result?.ToList();
         }
     }
 }   
