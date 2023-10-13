@@ -18,8 +18,10 @@ namespace SwapiProxy.API.Controllers
             _logger = logger;
         }
 
-        //TODO: Shouldn't be a POST but aggregating a number of requests takes a body.
-        // Potentially a base64 encoded query string?
+        /*
+         * Post request used in order to utilise a body of aggregated relative URLs even though this is essentially a GET
+         * Could possible use other methods such as a base64 encoded query string value
+         */
         [HttpPost(Name = "GetAggregateSwapiResponse")]
         public async Task<ActionResult<IEnumerable<object>>> Get([FromBody] IEnumerable<string> relativeUrls)
         {

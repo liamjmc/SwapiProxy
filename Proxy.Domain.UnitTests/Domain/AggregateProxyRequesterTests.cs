@@ -31,16 +31,13 @@ namespace Proxy.Domain.UnitTests
             Assert.That(result.Count(), Is.EqualTo(relativeUrls.Count()));
         }
 
-        //TODO: Need to consider what is best to return in the zero instance
         [Test]
-        public async Task GivenAnAggregateSwapiRequestIsMade_WhenTheRequestHasNoRelativeUrls_ThenNoResultIsReturned()
+        public void GivenAnAggregateSwapiRequestIsMade_WhenTheRequestHasNoRelativeUrls_ThenErrorIsThrown()
         {
             _swapiRequesterMock.Setup(s => s.GetAsync(It.IsAny<string>()))
                 .ReturnsAsync(new object());
 
-            var result = await _aggregateSwapiRequester.GetAsync(Enumerable.Empty<string>());
-
-            Assert.That(result.Count(), Is.EqualTo(0));
+            Assert.That(async () => await _aggregateSwapiRequester.GetAsync(Enumerable.Empty<string>()), Throws.ArgumentException);
         }
 
         [Test]

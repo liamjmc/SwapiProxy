@@ -90,7 +90,6 @@ builder.Services.AddHttpClient(appSettings.ClientName, httpClient =>
         TimeSpan.FromSeconds(15),
     }));
 
-//TODO: Make sure all the below is definitely needed
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

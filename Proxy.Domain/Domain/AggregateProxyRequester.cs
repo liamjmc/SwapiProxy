@@ -11,11 +11,17 @@
 
         public async Task<IEnumerable<object>> GetAsync(IEnumerable<string> relativeUrls)
         {
+            if (relativeUrls.Any() == false)
+                throw new ArgumentException($"No relative URLs have been given.");
+
             var result = new List<object>();
 
             foreach (var relativeUrl in relativeUrls)
             {
-                result.Add(await _swapiRequester.GetAsync(relativeUrl));
+                var response = await _swapiRequester.GetAsync(relativeUrl);
+
+                if (response != null)
+                    result.Add(response);
             }
 
             return result;

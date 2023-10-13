@@ -14,7 +14,6 @@ namespace SwapiProxy.API.IntegrationTests.Controllers
 {
     public class SwapiControllerTests
     {
-        //TODO: currently getting the jwt details from the config
         private HttpClient _httpClient;
 
         [SetUp]
