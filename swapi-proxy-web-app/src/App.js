@@ -1,20 +1,16 @@
 import { QueryClient, QueryClientProvider } from "react-query";
-import { ReactQueryDevtools } from 'react-query/devtools'
 import { Swapi } from "./Swapi.js";
 
 const queryClient = new QueryClient({});
 
 const App = () => {
   return (
-    <QueryClientProvider client={queryClient}>
-      
       <div className="App">
+        <div className="App-header">
+          <h1>Swapi API tester</h1>
+        </div>
         <Swapi/>
       </div>
-
-      {/* <ReactQueryDevtools initialIsOpen={true} /> */}
-
-    </QueryClientProvider>
   );
 };
 

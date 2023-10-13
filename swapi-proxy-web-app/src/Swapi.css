@@ -1,0 +1,11 @@
+.form-area {
+    color: #fff;
+}
+
+input, textarea, select {
+    min-width: 100%;
+}
+
+textarea {
+    min-height: 100px;
+}
