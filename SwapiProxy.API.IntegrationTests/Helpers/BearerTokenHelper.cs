@@ -9,9 +9,9 @@ namespace SwapiProxy.API.IntegrationTests.Helpers
     {
         internal static string GetBearerToken()
         {
-            var issuer = "https://issuer.com/";
-            var audience = "https://audience.com/";
-            var key = Encoding.ASCII.GetBytes("jnk2j3n4l2kj4n2lkj34nl2kj4n2lkj4nl2kjnl2j4nlk2jb4hg2cvj2fc4h2fgc4vlk2j3n4ksdfsdfsdfsdfsjfjaddgskyergbfjrgadgjnmxghjidgfdh");
+            var issuer = "https://test-issuer.com/";
+            var audience = "https://test-audience.com/";
+            var key = Encoding.ASCII.GetBytes("nlkjn234jn2lk4jn2lkjn2lkjnk4hj2fchgfc4l2jkb42g4v2gf4v2lkj3n42kljhb4j2hg4vk2jh4b23kj4n23jg4vhg4v23kjh4b2lk4n23lkj4n23lk4hb2kgv4");
 
             var subject = new ClaimsIdentity(new[]
             {

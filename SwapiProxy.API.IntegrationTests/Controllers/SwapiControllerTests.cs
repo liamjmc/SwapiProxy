@@ -8,6 +8,7 @@ using Proxy.Domain;
 using Moq.Protected;
 using Newtonsoft.Json;
 using Moq;
+using Microsoft.AspNetCore.Hosting;
 
 namespace SwapiProxy.API.IntegrationTests.Controllers
 {
@@ -39,14 +40,10 @@ namespace SwapiProxy.API.IntegrationTests.Controllers
             {
                 builder.ConfigureTestServices(services =>
                 {
-                    services.Configure<AppSettings>(a =>
-                    {
-                        a.ClientName = "testClient";
-                        a.ClientUrl = "http://this-is-a-test.com";
-                    });
-
                     services.AddSingleton(httpClientFactoryMock.Object);
                 });
+
+                builder.UseEnvironment("Test");
             });
             _httpClient = webApplicationFactory.CreateDefaultClient();
         }
