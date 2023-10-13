@@ -2,7 +2,7 @@
 {
     public class AppSettings
     {
-        public string ClientName { get; set; }
-        public string ClientUrl { get; set; }
+        public string ClientName { get; set; } = string.Empty;
+        public string ClientUrl { get; set; } = string.Empty;
     }
 }

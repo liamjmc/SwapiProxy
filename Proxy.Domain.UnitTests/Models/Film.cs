@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿#nullable disable
 
 // Taken from SharpTrooper for testing purposes only - https://github.com/olcay/SharpTrooper/tree/master
 namespace Proxy.Domain.UnitTests.Models

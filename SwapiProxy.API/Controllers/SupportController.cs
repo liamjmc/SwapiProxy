@@ -26,7 +26,7 @@ namespace SwapiProxy.API.Controllers
         // Simulates what would have happened if a user would have correctly logged in and given a JWT
         [AllowAnonymous]
         [HttpGet("valid-jwt-token", Name = "GetJwtToken")]
-        public async Task<ActionResult<string>> GetValidJwtToken(string userName, string email)
+        public ActionResult<string> GetValidJwtToken(string userName, string email)
         {
             var issuer = _configuration["Jwt:Issuer"];
             var audience = _configuration["Jwt:Audience"];
