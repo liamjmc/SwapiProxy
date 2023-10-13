@@ -18,20 +18,20 @@ The command `dotnet run` can also be used when within the project directory.
 
 ## Implemented features
 
-- An endpoint to proxy a single call to the proxy API
-- An endpoint to aggregate multiple calls to the proxy API in a single call to your API
-- Rate limiting calling the API and the downstream SWAPI API
-- Bearer token authorization
-- Unit tests
-- Integration tests
-- Postman collection
-- Versioned and authorized swagger
-- Small simple react SPA to test
+- An endpoint to proxy a single call to the proxy API.
+- An endpoint to aggregate multiple calls to the proxy API in a single call.
+- Separate rate limiting both calling the API itself and the downstream SWAPI API.
+- JWT bearer token authorization.
+- Unit tests.
+- Integration tests.
+- Postman collection.
+- Versioned and authorized swagger..
+- Small simple react SPA to test.
 - GitHub actions used to build and test the service in the pipeline.
 
 ## How this is implemented
 
-- There are three different methods of testing the API, Swagger, Postman and a simple react application.
+- There are three different methods of testing the API - Swagger, Postman and a simple react application.
 - The single call endpoint is in version 1 of the API and the aggregate endpoint is in version 2.
 - The proxy domain handles all the logic and is implemented in a manner that is independant of what downstream API is used.
 - A JWT bearer token is required to hit the endpoints. A support controller has been added in order to generate this bearer token for testing purposes.
@@ -73,5 +73,5 @@ The command `dotnet run` can also be used when within the project directory.
 - Further improvements to the pipeline including no direct push to main and further test checks.
 - Polly better utilised in order to include more policies when querying the downstream API.
 - The bearer token should be given a lifetime rather than lasting forever.
-- A `POST` request is used in order for a body to be passed to the aggreate swapi controller even though is getting data. This may be better suited implemented differently such as a `GET` with a base64 encoded query string.
+- A `POST` request is used in order for a body to be passed to the aggreate swapi controller even though this is only getting data. This may be implemented differently such as a `GET` with a base64 encoded query string.
 - Proxies can be imlemented via a middleware though this would make the aggregated queries complex.
