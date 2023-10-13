@@ -4,8 +4,30 @@
 
 input, textarea, select {
     min-width: 100%;
+    margin: 10px 0;
 }
 
 textarea {
     min-height: 100px;
+}
+
+select {
+    cursor: pointer;
+}
+
+pre {
+    border: 1px solid white;
+    padding: 20px;
+    text-wrap: pretty;
+    background: #fff;
+    color: #072541;
+    border-radius: 5px;
+}
+
+button {
+    padding: 10px 30px;
+    margin: 10px 0;
+    font-size: 16px;
+    cursor: pointer;
+    color: #072541;
 }
