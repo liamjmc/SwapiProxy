@@ -1,7 +1,4 @@
 ﻿using Microsoft.Extensions.Options;
-using Polly;
-using Polly.RateLimit;
-using System.Net.Http;
 using System.Text.Json;
 
 namespace Proxy.Domain
@@ -19,7 +16,7 @@ namespace Proxy.Domain
             _appSettings = appSettings.Value;
         }
 
-        public async Task<object> GetAsync(string relativeUrl)
+        public async Task<object?> GetAsync(string relativeUrl)
         {
             //TODO: throw proper error if SWAPI client doesn't exist
             //Get the swapi string from a config value
@@ -28,6 +25,7 @@ namespace Proxy.Domain
 
             var httpResponseMessage = await rateLimiter.ExecuteAsync(() =>
             {
+                //TODO: tidy this write line up
                 Console.WriteLine($"Came into execution {DateTime.Now.ToLongTimeString()}");
 
                 return httpClient.GetAsync(relativeUrl);
@@ -40,7 +38,8 @@ namespace Proxy.Domain
                 return await JsonSerializer.DeserializeAsync<object>(contentStream);
             }
 
-            return string.Empty;
+            //TODO: what to return on an error
+            return null;
         }
     }
 }

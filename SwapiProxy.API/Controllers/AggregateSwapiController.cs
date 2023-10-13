@@ -21,7 +21,7 @@ namespace SwapiProxy.API.Controllers
         //TODO: Shouldn't be a POST but aggregating a number of requests takes a body.
         // Potentially a base64 encoded query string?
         [HttpPost(Name = "GetAggregateSwapiResponse")]
-        public async Task<object> Get([FromBody] IEnumerable<string> relativeUrls)
+        public async Task<IEnumerable<object>> Get([FromBody] IEnumerable<string> relativeUrls)
         {
             return await _aggregateSwapiRequester.GetAsync(relativeUrls);
         }

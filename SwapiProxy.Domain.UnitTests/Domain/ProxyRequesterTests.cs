@@ -5,12 +5,14 @@ using Proxy.Domain.UnitTests.Models;
 using System.Net;
 using Polly.RateLimit;
 using Polly;
+using Microsoft.Extensions.Options;
+using NUnit.Framework;
 
 namespace Proxy.Domain.UnitTests
 {
-    public class SwapiRequesterTests
+    public class ProxyRequesterTests
     {
-        private ProxyRequester _swapiRequester;
+        private ProxyRequester _proxyRequester;
         private Mock<IHttpClientFactory> _httpClientFactoryMock;
         private Mock<HttpMessageHandler> _httpMessageHandlerMock;
 
@@ -23,7 +25,9 @@ namespace Proxy.Domain.UnitTests
             var rateLimiter = new Mock<IRateLimiter>();
             rateLimiter.Setup(r => r.GetPolicy()).Returns(Policy.RateLimitAsync(10, TimeSpan.FromSeconds(100)));
 
-            _swapiRequester = new ProxyRequester(rateLimiter.Object, _httpClientFactoryMock.Object);
+            var appSettings = Options.Create(new AppSettings { ClientName = "swapi-client" });
+
+            _proxyRequester = new ProxyRequester(rateLimiter.Object, _httpClientFactoryMock.Object, appSettings);
         }
 
         [TestCase("films/1")]
@@ -74,9 +78,32 @@ namespace Proxy.Domain.UnitTests
 
             _httpClientFactoryMock.Setup(_ => _.CreateClient(It.IsAny<string>())).Returns(httpClient);
 
-            var result = await _swapiRequester.GetAsync(relativeUrl);
+            var result = await _proxyRequester.GetAsync(relativeUrl);
 
             Assert.That(result, Is.Not.Null);
+        }
+
+        [Test]
+        public async Task GivenThatSwapiIsRequested_WhenTheApiReturnsAnError_ThenAnErrorIsReturned()
+        {
+            var film = new Film();
+
+            _httpMessageHandlerMock.Protected()
+                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
+                .ReturnsAsync(new HttpResponseMessage
+                {
+                    StatusCode = HttpStatusCode.InternalServerError,
+                    Content = new StringContent(string.Empty)
+                });
+
+            var httpClient = new HttpClient(_httpMessageHandlerMock.Object);
+            httpClient.BaseAddress = new Uri("https://starwarsapi.co/");
+
+            _httpClientFactoryMock.Setup(_ => _.CreateClient(It.IsAny<string>())).Returns(httpClient);
+
+            var result = await _proxyRequester.GetAsync("/films/4");
+
+            Assert.That(result, Is.Null);
         }
     }
 }

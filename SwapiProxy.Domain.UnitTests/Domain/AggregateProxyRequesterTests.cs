@@ -1,8 +1,9 @@
 using Moq;
+using Newtonsoft.Json.Linq;
 
 namespace Proxy.Domain.UnitTests
 {
-    public class AggregateSwapiRequesterTests
+    public class AggregateProxyRequesterTests
     {
         private AggregateProxyRequester _aggregateSwapiRequester;
         private Mock<IProxyRequester> _swapiRequesterMock;
@@ -43,7 +44,7 @@ namespace Proxy.Domain.UnitTests
         }
 
         [Test]
-        public async Task GivenAnAggregateSwapiRequestIsMade_WhenTheSwapiRequestThrowsAnError_ThenAnErrorIsThrown()
+        public void GivenAnAggregateSwapiRequestIsMade_WhenTheSwapiRequestThrowsAnError_ThenAnErrorIsThrown()
         {
             var relativeUrls = Enumerable.Range(0, 10).Select(x => Guid.NewGuid().ToString());
 
