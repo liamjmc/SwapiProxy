@@ -1,5 +1,7 @@
-﻿using Polly;
+﻿using Microsoft.Extensions.Options;
+using Polly;
 using Polly.RateLimit;
+using System.Net.Http;
 using System.Text.Json;
 
 namespace Proxy.Domain
@@ -8,18 +10,20 @@ namespace Proxy.Domain
     {
         private readonly IRateLimiter _rateLimiter;
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly AppSettings _appSettings;
 
-        public ProxyRequester(IRateLimiter rateLimiter, IHttpClientFactory httpClientFactory)
+        public ProxyRequester(IRateLimiter rateLimiter, IHttpClientFactory httpClientFactory, IOptions<AppSettings> appSettings)
         {
             _rateLimiter = rateLimiter;
             _httpClientFactory = httpClientFactory;
+            _appSettings = appSettings.Value;
         }
 
         public async Task<object> GetAsync(string relativeUrl)
         {
             //TODO: throw proper error if SWAPI client doesn't exist
             //Get the swapi string from a config value
-            var httpClient = _httpClientFactory.CreateClient("Swapi");
+            var httpClient = _httpClientFactory.CreateClient(_appSettings.ClientName);
             var rateLimiter = _rateLimiter.GetPolicy();
 
             var httpResponseMessage = await rateLimiter.ExecuteAsync(() =>
@@ -37,18 +41,6 @@ namespace Proxy.Domain
             }
 
             return string.Empty;
-        }
-
-        public async Task LimitedGet(Action action)
-        {
-            var retryPolicy = Policy
-                .Handle<RateLimitRejectedException>()
-                .WaitAndRetry(
-                    3,
-                    (int _, Exception ex, Context __) => ((RateLimitRejectedException)ex).RetryAfter,
-                    (_, __, ___, ____) => { /*Log that the r*/ });
-
-            retryPolicy.Execute(action);
         }
     }
 }

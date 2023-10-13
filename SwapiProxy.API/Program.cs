@@ -9,6 +9,7 @@ using Proxy.Domain;
 using System.Text;
 using Polly;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -74,9 +75,12 @@ builder.Services.AddTransient<IProxyRequester, ProxyRequester>();
 builder.Services.AddTransient<IAggregateProxyRequester, AggregateProxyRequester>();
 builder.Services.AddSingleton<IRateLimiter, RateLimiter>();
 
-builder.Services.Configure<AppSettings>(a => a.ClientName = "Swapi");
+var appSettingsConfiguration = builder.Configuration.GetSection("AppSettings");
+var appSettings = appSettingsConfiguration.Get<AppSettings>();
 
-builder.Services.AddHttpClient("Swapi", httpClient =>
+builder.Services.Configure<AppSettings>(appSettingsConfiguration);
+
+builder.Services.AddHttpClient(appSettings.ClientName, httpClient =>
 {
     httpClient.BaseAddress = new Uri("https://swapi.dev/api/");
 }).AddTransientHttpErrorPolicy(builder =>
